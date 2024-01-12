@@ -1,10 +1,15 @@
 import { useState } from 'react'
-import { StarIcon } from '@heroicons/react/20/solid'
+import Rating from '@mui/material/Rating';
 import { RadioGroup } from '@headlessui/react'
+import { Box, Button, Grid, LinearProgress } from '@mui/material';
+import ProductReviewCard from './ProductReviewCard';
+import { mens_kurta } from '../../../Data/men_kurta';
+import HomeSectionCard from '../HomeSectionCard/HomeSectionCard';
 
 const product = {
-    name: 'Basic Tee 6-Pack',
-    price: '$192',
+    brand: 'Universaloutfit',
+    name: 'Casual Puff Sleeves Solid Women White Top',
+    price: '₹192',
     href: '#',
     breadcrumbs: [
         { id: 1, name: 'Men', href: '#' },
@@ -34,14 +39,10 @@ const product = {
         { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
     ],
     sizes: [
-        { name: 'XXS', inStock: false },
-        { name: 'XS', inStock: true },
         { name: 'S', inStock: true },
         { name: 'M', inStock: true },
         { name: 'L', inStock: true },
         { name: 'XL', inStock: true },
-        { name: '2XL', inStock: true },
-        { name: '3XL', inStock: true },
     ],
     description:
         'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
@@ -65,7 +66,7 @@ export default function ProductDetails() {
     const [selectedSize, setSelectedSize] = useState(product.sizes[2])
 
     return (
-        <div className="bg-white">
+        <div className="bg-white lg:px-20">
             <div className="pt-6">
                 <nav aria-label="Breadcrumb">
                     <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -119,88 +120,40 @@ export default function ProductDetails() {
                     </div>
 
                     {/* Product info */}
-                    <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-                        <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
+                    <div className="lg:col-span-1 max-auto max-w-2xl px-4 pb-16 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-24">
+                        <div className="lg:col-span-2">
+                            <h1 className="text-lg sm:text-xl font-semibold text-gray-900">{product.brand}</h1>
+                            <h1 className="text-lg lg:text-xl text-gray-900 opacity-60 pt-1">{product.name}</h1>
                         </div>
 
                         {/* Options */}
                         <div className="mt-4 lg:row-span-3 lg:mt-0">
                             <h2 className="sr-only">Product information</h2>
-                            <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+                            <div className="flex space-x-5 items-center text-lg lg:text-xl text-gray-900 mt-6">
+                                <p className="font-semibold">₹199</p>
+                                <p className="opacity-50 line-through">₹211</p>
+                                <p className="text-green-600 font-semibold">5% Off</p>
+                            </div>
 
                             {/* Reviews */}
                             <div className="mt-6">
-                                <h3 className="sr-only">Reviews</h3>
-                                <div className="flex items-center">
-                                    <div className="flex items-center">
-                                        {[0, 1, 2, 3, 4].map((rating) => (
-                                            <StarIcon
-                                                key={rating}
-                                                className={classNames(
-                                                    reviews.average > rating ? 'text-gray-900' : 'text-gray-200',
-                                                    'h-5 w-5 flex-shrink-0'
-                                                )}
-                                                aria-hidden="true"
-                                            />
-                                        ))}
-                                    </div>
-                                    <p className="sr-only">{reviews.average} out of 5 stars</p>
-                                    <a href={reviews.href} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                                        {reviews.totalCount} reviews
-                                    </a>
+                                <div className="flex items-center space-x-3">
+                                    <Rating name="read-only" value={3.5} readOnly />
+                                    <p className="opacity-50 text-sm">56540 Ratings</p>
+                                    <p className="text-sm ml-3 font-medium text-indigo-600 hover:text-indigo-500">3870 Reviews</p>
                                 </div>
                             </div>
 
                             <form className="mt-10">
-                                {/* Colors */}
-                                <div>
-                                    <h3 className="text-sm font-medium text-gray-900">Color</h3>
-
-                                    <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
-                                        <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
-                                        <div className="flex items-center space-x-3">
-                                            {product.colors.map((color) => (
-                                                <RadioGroup.Option
-                                                    key={color.name}
-                                                    value={color}
-                                                    className={({ active, checked }) =>
-                                                        classNames(
-                                                            color.selectedClass,
-                                                            active && checked ? 'ring ring-offset-1' : '',
-                                                            !active && checked ? 'ring-2' : '',
-                                                            'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                                                        )
-                                                    }
-                                                >
-                                                    <RadioGroup.Label as="span" className="sr-only">
-                                                        {color.name}
-                                                    </RadioGroup.Label>
-                                                    <span
-                                                        aria-hidden="true"
-                                                        className={classNames(
-                                                            color.class,
-                                                            'h-8 w-8 rounded-full border border-black border-opacity-10'
-                                                        )}
-                                                    />
-                                                </RadioGroup.Option>
-                                            ))}
-                                        </div>
-                                    </RadioGroup>
-                                </div>
-
                                 {/* Sizes */}
                                 <div className="mt-10">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                                        <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                                            Size guide
-                                        </a>
                                     </div>
 
                                     <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
                                         <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
-                                        <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+                                        <div className="grid grid-cols-4 gap-4 sm:grid-cols-6 lg:grid-cols-8">
                                             {product.sizes.map((size) => (
                                                 <RadioGroup.Option
                                                     key={size.name}
@@ -251,12 +204,22 @@ export default function ProductDetails() {
                                     </RadioGroup>
                                 </div>
 
-                                <button
-                                    type="submit"
-                                    className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        px: "2rem",
+                                        py: "1rem",
+                                        mt: "2rem",
+                                        bgcolor: "#9155fd",
+                                        fontWeight: "bold",
+                                        '&:hover': {
+                                            bgcolor: "#6932a3",
+                                        }
+                                    }}
+
                                 >
-                                    Add to bag
-                                </button>
+                                    Add To Cart
+                                </Button>
                             </form>
                         </div>
 
@@ -292,6 +255,83 @@ export default function ProductDetails() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                {/* Rating and Reviews */}
+                <section>
+                    <h1 className="font-semibold text-lg pb-4">Recent Reviews & Rating</h1>
+                    <div className="border p-5">
+                        <Grid container spacing={7}>
+                            <Grid item xs={7}>
+                                <div className="space-y-5">
+                                    {[1, 1, 1].map((item) => <ProductReviewCard />)}
+                                </div>
+                            </Grid>
+                            <Grid item xs={5}>
+                                <h1 className="text-xl font-semibold pb-1">Product Rating</h1>
+
+                                <div className="flex items-center space-x-3">
+                                    <Rating value={4.6} precision={0.5} readOnly />
+                                    <p className="opacity-60">54890 Ratings</p>
+                                </div>
+
+                                <Box className="mt-5 space-y-3">
+                                    <Grid container alignItems="center" gap={2}>
+                                        <Grid item xs={2}>
+                                            <p>Excellent</p>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <LinearProgress sx={{bgcolor: "#d0d0d0", borderRadius: 4, height:7}} variant="determinate" value={40} color="success" />
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container alignItems="center" gap={2}>
+                                        <Grid item xs={2}>
+                                            <p>Very Good</p>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <LinearProgress sx={{bgcolor: "#d0d0d0", borderRadius: 4, height:7}} variant="determinate" value={30} color="success" />
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container alignItems="center" gap={2}>
+                                        <Grid item xs={2}>
+                                            <p>Good</p>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <LinearProgress sx={{bgcolor: "#d0d0d0", borderRadius: 4, height:7}} variant="determinate" value={25} color="success" />
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container alignItems="center" gap={2}>
+                                        <Grid item xs={2}>
+                                            <p>Average</p>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <LinearProgress sx={{bgcolor: "#d0d0d0", borderRadius: 4, height:7}} variant="determinate" value={20} color="warning" />
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container alignItems="center" gap={2}>
+                                        <Grid item xs={2}>
+                                            <p>Poor</p>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <LinearProgress sx={{bgcolor: "#d0d0d0", borderRadius: 4, height:7}} variant="determinate" value={10} color="error" />
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </section>
+
+                {/* Similar Products */}
+                <section className="pt-10">
+                    <h1 className="py-5 text-xl font-bold">Similar Products</h1>
+                    <div className="flex flex-wrap space-y-5 gap-2">
+                        {mens_kurta.map((item) => <HomeSectionCard product={item} />)}
                     </div>
                 </section>
             </div>
