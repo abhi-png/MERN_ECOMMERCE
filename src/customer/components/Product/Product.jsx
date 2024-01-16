@@ -292,11 +292,11 @@ export default function Product() {
                                                             >
                                                                 {section.options.map((option, optionIdx) => (
                                                                     <>
-                                                                        <FormControlLabel 
+                                                                        <FormControlLabel
                                                                             onChange={(e) => handleRadioFilterChange(e, section.id)}
-                                                                            value={option.value} 
-                                                                            control={<Radio />} 
-                                                                            label={option.lable} 
+                                                                            value={option.value}
+                                                                            control={<Radio />}
+                                                                            label={option.lable}
                                                                         />
                                                                     </>
                                                                 ))}

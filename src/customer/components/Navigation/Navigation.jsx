@@ -1,16 +1,45 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { navigation } from './NavigationData'
-import { Avatar, Button, Link, Menu, MenuItem } from '@mui/material'
-import { deepPurple } from '@mui/material/colors'
+import { Fragment, useState } from "react"
+import { Dialog, Popover, Tab, Transition } from "@headlessui/react"
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { navigation } from "./NavigationData"
+import { Avatar, Button, Menu, MenuItem } from "@mui/material"
+import { deepPurple } from "@mui/material/colors"
+import Fade from '@mui/material/Fade'
+import { useNavigate } from "react-router-dom"
 
 function classNames(...classes) {
    return classes.filter(Boolean).join(' ')
 }
 
 export default function Navigation() {
-   const [open, setOpen] = useState(false)
+   const [open, setOpen] = useState(false);
+   const navigate = useNavigate();
+
+   const [openAuthModal, setOpenAuthModal] = useState(false);
+   const [anchorEl, setAnchorEl] = useState(null);
+   const openUserMenu = Boolean(anchorEl);
+   const jwt = localStorage.getItem("jwt");
+
+   const handleUserClick = (event) => {
+      setAnchorEl(event.currentTarget);
+   }
+
+   const handleCloseUserMenu = (event) => {
+      setAnchorEl(null);
+   }
+
+   const handleOpen = () => {
+      setOpenAuthModal(true);
+   }
+
+   const handleClose = () => {
+      setOpenAuthModal(false);
+   }
+
+   const handleCategoryClick = (category, section, item, close) => {
+      navigate(`/${category.id}/${section.id}/${item.id}`);
+      close();
+   }
 
    return (
       <div className="bg-white pb-10">
@@ -174,12 +203,12 @@ export default function Navigation() {
                      </button>
 
                      {/* Logo */}
-                     <div className="ml-4 flex lg:ml-0">
+                     <div className="ml-4 flex lg:ml-0 cursor-pointer" onClick={() => navigate("/")}>
                         <span className="sr-only">Your Company</span>
                         <img
                            className="h-8 w-8 mr-2"
                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                           alt="Abinash Ecomm"
+                           alt="Logo"
                         />
                      </div>
 
@@ -252,9 +281,14 @@ export default function Navigation() {
                                                                >
                                                                   {section.items.map((item) => (
                                                                      <li key={item.name} className="flex">
-                                                                        <a href={item.href} className="hover:text-gray-800">
+                                                                        <p
+                                                                           onClick={() =>
+                                                                              handleCategoryClick(category, section, item, close)
+                                                                           }
+                                                                           className="cursor-pointer hover:text-gray-800"
+                                                                        >
                                                                            {item.name}
-                                                                        </a>
+                                                                        </p>
                                                                      </li>
                                                                   ))}
                                                                </ul>
@@ -285,38 +319,45 @@ export default function Navigation() {
 
                      <div className="ml-auto flex items-center">
                         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-
-                           <div>
-                              <Avatar
-                                 className="text-white"
-                                 onClick={() => { }}
-                                 sx={{
-                                    bgcolor: deepPurple[500],
-                                    color: "white",
-                                    cursor: "pointer"
-                                 }}
+                           {true ? (
+                              <div>
+                                 <Avatar
+                                    className="text-white"
+                                    onClick={handleUserClick}
+                                    sx={{
+                                       bgcolor: deepPurple[500],
+                                       color: "white",
+                                       cursor: "pointer"
+                                    }}
+                                 >
+                                    A
+                                 </Avatar>
+                                 <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={openUserMenu}
+                                    onClose={handleCloseUserMenu}
+                                    TransitionComponent={Fade}
+                                    MenuListProps={{
+                                       "aria-labelledby": "fade-button"
+                                    }}
+                                 >
+                                    <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
+                                    <MenuItem onClick={() => navigate("/account/order")}>My Orders</MenuItem>
+                                    <MenuItem>Logout</MenuItem>
+                                 </Menu>
+                              </div>
+                           ) : (
+                              <Button
+                                 onClick={handleOpen}
+                                 className="text-sm font-medium hover:text-gray-500"
                               >
-                                 A
-                              </Avatar>
-                           </div>
-                           <Menu
-                              id="basic-menu"
-                              MenuListProps={{
-                                 "aria-labelledby": "basic-button"
-                              }}
-                           >
-                              <MenuItem>Profile</MenuItem>
-                              <MenuItem>My Orders</MenuItem>
-                              <MenuItem>Logout</MenuItem>
-                           </Menu>
+                                 Signin
+                              </Button>
+                           )}
                         </div>
-                        <Button
-                           onClick={() => { }}
-                           className="text-sm font-medium hover:text-gray-500"
-                        >
-                           Signin
-                        </Button>
                      </div>
+
 
                      {/* Search */}
                      <div className="flex lg:ml-6">
