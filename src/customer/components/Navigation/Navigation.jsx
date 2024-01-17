@@ -1,11 +1,15 @@
-import { Fragment, useState } from "react"
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react"
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
-import { navigation } from "./NavigationData"
-import { Avatar, Button, Menu, MenuItem } from "@mui/material"
-import { deepPurple } from "@mui/material/colors"
-import Fade from '@mui/material/Fade'
-import { useNavigate } from "react-router-dom"
+import { Fragment, useState } from "react";
+import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { navigation } from "./NavigationData";
+import { Avatar, Button, Menu, MenuItem } from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
+import Fade from "@mui/material/Fade";
+import { useNavigate } from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 function classNames(...classes) {
    return classes.filter(Boolean).join(' ')
@@ -187,7 +191,7 @@ export default function Navigation() {
 
          <header className="relative bg-white">
             <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-               Get free delivery on orders over ₹999
+               Get free delivery on orders over ₹2999
             </p>
 
             <nav aria-label="Top" className="mx-auto">
@@ -333,18 +337,33 @@ export default function Navigation() {
                                     A
                                  </Avatar>
                                  <Menu
-                                    id="basic-menu"
+                                    id="fade-menu"
                                     anchorEl={anchorEl}
                                     open={openUserMenu}
                                     onClose={handleCloseUserMenu}
                                     TransitionComponent={Fade}
                                     MenuListProps={{
-                                       "aria-labelledby": "fade-button"
+                                       'aria-labelledby': 'fade-button',
                                     }}
+                                    style={{ marginTop: "5px" }}
                                  >
-                                    <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
-                                    <MenuItem onClick={() => navigate("/account/order")}>My Orders</MenuItem>
-                                    <MenuItem>Logout</MenuItem>
+                                    <MenuItem
+                                       onClick={handleCloseUserMenu}
+                                       className="flex items-center"
+                                    >
+                                       <PersonIcon style={{ marginRight: "15px", color: "#424242" }} /> Profile
+                                    </MenuItem>
+                                    <MenuItem
+                                       onClick={() => navigate("/account/order")}
+                                       className="flex items-center"
+                                    >
+                                       <LocalMallIcon style={{ marginRight: "15px", color: "#424242" }} /> My Orders
+                                    </MenuItem>
+                                    <MenuItem
+                                       className="flex items-center font-semibold"
+                                    >
+                                       <ExitToAppIcon style={{ marginRight: "15px", color: "#424242" }} /> Logout
+                                    </MenuItem>
                                  </Menu>
                               </div>
                            ) : (
@@ -369,7 +388,7 @@ export default function Navigation() {
 
                      {/* Cart */}
                      <div className="ml-4 flow-root lg:ml-6">
-                        <Button className="group -m-2 flex items-center p-2">
+                        <Button onClick={() => navigate("/cart")} className="group -m-2 flex items-center p-2">
                            <ShoppingBagIcon
                               className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                               aria-hidden="true"
