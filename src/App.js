@@ -8,12 +8,6 @@ const App = () => {
             <Routes>
                 <Route path="/*" element={<CustomerRouters />} />
             </Routes>
-
-
-            {/* <Cart /> */}
-            {/* <Checkout /> */}
-            {/* <Order /> */}
-            {/* <OrderDetails /> */}
         </div>
     )
 }
