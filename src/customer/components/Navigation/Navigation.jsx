@@ -10,6 +10,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import AuthModal from "../../auth/AuthModal";
 
 function classNames(...classes) {
    return classes.filter(Boolean).join(' ')
@@ -323,7 +324,7 @@ export default function Navigation() {
 
                      <div className="ml-auto flex items-center">
                         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                           {true ? (
+                           {!true ? (
                               <div>
                                  <Avatar
                                     className="text-white"
@@ -401,6 +402,7 @@ export default function Navigation() {
                </div>
             </nav>
          </header>
+         <AuthModal handleClose={handleClose} open={openAuthModal} />
       </div>
    )
 }
